@@ -12,7 +12,6 @@ EXPOSE 8000
 ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    pip install flake8 && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-build-deps \
         build-base postgresql-dev musl-dev && \
@@ -23,7 +22,7 @@ RUN python -m venv /py && \
     rm -rf /tmp && \
     apk del .tmp-build-deps && \
     adduser \
-        --disabled-password \  
+        --disabled-password \
         --no-create-home \
         django-user
 
