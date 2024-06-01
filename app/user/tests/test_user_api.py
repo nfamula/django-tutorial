@@ -19,7 +19,7 @@ def create_user(**params):
     return get_user_model().objects.create_user(**params)
 
 
-class PublicUserAPITests(TestCase):
+class PublicUserApiTests(TestCase):
     """Test the public features of the user API."""
 
     def setUp(self):
@@ -94,6 +94,14 @@ class PublicUserAPITests(TestCase):
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_create_token_email_not_found(self):
+        """Test error returned if user not found for given email."""
+        payload = {'email': 'test@example.com', 'password': 'pass123'}
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_create_token_blank_password(self):
         """Test posting a blank password returns an error."""
 
@@ -110,11 +118,11 @@ class PublicUserAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateUserAPITests(TestCase):
+class PrivateUserApiTests(TestCase):
 
     """Test API requests that require authentication."""
 
-    def setup(self):
+    def setUp(self):
         self.user = create_user(
             email='test@example.com',
             password='testpass123',
