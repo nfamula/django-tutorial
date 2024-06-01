@@ -8,7 +8,6 @@ from django.test import Client
 
 
 class AdminSiteTests(TestCase):
-
     """Tests for Django admin."""
 
     def setUp(self):
