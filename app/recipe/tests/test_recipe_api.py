@@ -140,13 +140,13 @@ class PrivateRecipeAPITests(TestCase):
         recipe = create_recipe(
             user=self.user,
             title='Sample recipe title',
-            link='https://example.com/recipe.pdf',
+            link='http://example.com/recipe.pdf',
             description='Sample description',
         )
 
         payload = {
             'title': 'New recipe title',
-            'link': 'https://example.com/new-recipe.pdf',
+            'link': 'http://example.com/new-recipe.pdf',
             'description': 'New recipe description',
             'time_minutes': 10,
             'price': Decimal('2.50')
@@ -158,6 +158,7 @@ class PrivateRecipeAPITests(TestCase):
         recipe.refresh_from_db()
         for k, v in payload.items():
             self.assertEqual(getattr(recipe, k), v)
+        self.assertEqual(recipe.user, self.user)
 
     def test_update_user_returns_error(self):
         """Test changing the recipe user results in an error"""
